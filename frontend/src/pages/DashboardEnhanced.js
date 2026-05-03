@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { generateReport } from '../services/api';
+import { generateReport, sendChatMessage } from '../services/api';
 import {
   CodeIcon,
   GithubIcon,
@@ -27,6 +27,42 @@ function DashboardEnhanced() {
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  // Handle sending chat message
+  const handleSendMessage = async () => {
+    if (!chatInput.trim() || isSendingMessage) return;
+
+    const userMessage = chatInput.trim();
+    const newUserMessage = { sender: 'user', text: userMessage };
+    
+    // Add user message immediately
+    setChatMessages(prev => [...prev, newUserMessage]);
+    setChatInput('');
+    setIsSendingMessage(true);
+
+    try {
+      // Prepare code context from analysis
+      const codeContext = `Repository: ${repoInfo.owner}/${repoInfo.repo}\nLanguage: ${repoInfo.language}\nSummary: ${analysis.summary}`;
+      
+      // Send message to API
+      const response = await sendChatMessage(userMessage, codeContext, chatMessages);
+      
+      // Add Bob's response
+      setChatMessages(prev => [...prev, {
+        sender: 'bob',
+        text: response.message || response.response?.message || 'I received your message. How can I help you understand your code better?'
+      }]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setChatMessages(prev => [...prev, {
+        sender: 'bob',
+        text: 'I\'m here to help! I can answer questions about your code, explain functions, suggest improvements, and more. What would you like to know?'
+      }]);
+    } finally {
+      setIsSendingMessage(false);
+    }
+  };
 
   // Redirect if no data
   useEffect(() => {
@@ -434,32 +470,16 @@ function DashboardEnhanced() {
                 placeholder="Ask about your code..."
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
                 onKeyPress={(e) => {
-                  if (e.key === 'Enter' && chatInput.trim()) {
-                    setChatMessages([...chatMessages, { sender: 'user', text: chatInput }]);
-                    setChatInput('');
-                    setTimeout(() => {
-                      setChatMessages(prev => [...prev, { 
-                        sender: 'bob', 
-                        text: 'I\'m analyzing your question. This feature will be fully integrated with IBM watsonx.ai soon!' 
-                      }]);
-                    }, 1000);
+                  if (e.key === 'Enter') {
+                    handleSendMessage();
                   }
                 }}
+                disabled={isSendingMessage}
               />
               <button
-                onClick={() => {
-                  if (chatInput.trim()) {
-                    setChatMessages([...chatMessages, { sender: 'user', text: chatInput }]);
-                    setChatInput('');
-                    setTimeout(() => {
-                      setChatMessages(prev => [...prev, { 
-                        sender: 'bob', 
-                        text: 'I\'m analyzing your question. This feature will be fully integrated with IBM watsonx.ai soon!' 
-                      }]);
-                    }, 1000);
-                  }
-                }}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition hover-scale flex items-center space-x-2"
+                onClick={handleSendMessage}
+                disabled={isSendingMessage}
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
