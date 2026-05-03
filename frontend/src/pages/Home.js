@@ -24,24 +24,16 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden particle-bg">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float animation-delay-4000"></div>
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-2xl opacity-10 animate-pulse-slow"></div>
-      </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Navigation */}
-      <nav className="glass-strong shadow-lg sticky top-0 z-50 animate-slideInDown">
+      <nav className="bg-white/90 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-lg transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 animate-glow">
-                <CodeIcon className="w-6 h-6 text-white animate-bounce" />
+            <div className="flex items-center space-x-3">
+              <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-lg">
+                <CodeIcon className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300 animate-fadeIn">Bob Repo IQ</span>
+              <span className="text-xl font-bold text-gray-900">Bob Repo IQ</span>
             </div>
             <div className="flex items-center space-x-4">
               {loggedIn ? (
@@ -52,16 +44,16 @@ function Home() {
                   </div>
                   <button
                     onClick={() => navigate('/compare')}
-                    className="gradient-cosmic hover:animate-gradient text-white px-6 py-2 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 transform hover:scale-110 hover:shadow-2xl hover:rotate-2 active:scale-95 hover-glow"
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
                   >
                     <span>Compare</span>
                   </button>
                   <button
                     onClick={() => navigate('/analyze')}
-                    className="gradient-ocean hover:animate-gradient text-white px-6 py-2 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 transform hover:scale-110 hover:shadow-2xl hover:-rotate-2 active:scale-95 hover-glow"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
                   >
                     <span>Analyze Repo</span>
-                    <ArrowRightIcon className="w-4 h-4 animate-bounce" />
+                    <ArrowRightIcon className="w-4 h-4" />
                   </button>
                   <button
                     onClick={handleLogout}
@@ -93,16 +85,16 @@ function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 relative z-10">
-        <div className="text-center animate-zoomIn">
-          <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-8 transform hover:scale-110 hover:rotate-2 transition-all duration-300 hover-glow animate-float">
-            <GithubIcon className="w-4 h-4 animate-rotate" />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-8">
+            <GithubIcon className="w-4 h-4" />
             <span>Powered by IBM watsonx.ai Granite Model</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight animate-slideInUp">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
             Translate Code into
-            <span className="block text-transparent bg-clip-text gradient-animated animate-gradient">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
               Plain English
             </span>
           </h1>
